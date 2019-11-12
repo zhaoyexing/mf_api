@@ -1,0 +1,61 @@
+server:
+  port: 9100
+  contextPath: /
+
+
+wx:
+  config:
+    source: 38
+    appid: wxee4c032ab72c2faa
+    secret: ead28f2a8b66414a79f9ad95ceb35ab6
+    backUrl: http://pr.maxfactor.data.social-touch.com/views/index/
+
+
+
+logging:
+  config: classpath:logback-spring.xml
+
+
+spring.profiles.active: prod
+
+
+spring:
+  thymeleaf:
+    mode: HTML5
+    cache: false
+    encoding: UTF-8
+    charset: UTF-8
+    content-type: text/html
+    prefix: classpath:/templates
+    suffix: .html
+---
+spring:
+  profiles: dev
+  datasource:
+    druid:
+      name: dataSource
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://115.28.164.153:3306/datacenter?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+      username: root
+      password: socialdata
+
+---
+spring:
+  profiles: prod
+  datasource:
+    druid:
+      name: dataSource
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://101.201.146.235:3306/datacenter?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+      username: mf
+      password: mf123456
+
+
+
+
+
+
+
+
+
+

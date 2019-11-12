@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta content="yes" name="apple-mobile-web-app-capable"/>
+	<meta content="yes" name="apple-touch-fullscreen"/>
+	<meta content="telephone=no,email=no" name="format-detection"/>
+	<title>代金券 - 蜜丝佛陀</title>
+	<script src="/static/mf_resource/js/flexible.js"></script>
+	<script src="/static/mf_resource/js/zepto.min.js"></script>
+<!--	<link rel='stylesheet' href='/static/mf_resource/css/main.css?v=210111111' />-->
+	<script type="text/javascript">
+		var timeNow = Date.parse(new Date());
+		var linkStr = '<link rel="stylesheet" href="/static/mf_resource/css/main.css?v='+timeNow+'"  />';
+		document.write(linkStr);
+	</script>
+</head>
+<body>
+<div id="noData" style="color:#7d7d7d;font-size:0.64rem;text-align:center;position:absolute;top:0;left:0;right:0;bottom:0;height:50px;margin:auto;">
+	正在加载中...
+</div>
+<div id="viewData" style="display:none">
+	<div class="tophead">
+	</div>
+	<div class="content">
+		<div class="title">
+			<h1 id="prdName">臻密不凝结睫毛膏</h1>
+			<h2 id="prdInfo">革命性3D致密刷头能塑造3倍丰盈效果，同时免除了睫毛结块烦恼。</h2>
+		</div>
+
+		<div class="coupon">
+			<div class="cash">
+				<span class="cc1">50元</span>
+				<!-- <span class="cc2">代金券</span> -->
+				<span class="cc3">专柜消费满100元使用</span>
+				<span class="cc4">有效期：<b class="date" style="font-weight:normal">2016年11月20日</b></span>
+				<span class="cc5">未使用</span>
+				<span class="cc6">兑换码</span>
+				<span class="cc7">0112 3546</span>
+			</div>
+		</div>
+		<div class="btn"><a id="scoreBtn" href="http://maxfactor.project.social-touch.com/wap/user/coupon">点击查看</a></div>
+		<div class="desc">
+			<div id="buyInfo"></div>
+			<div class="color1 sm">*具体优惠折扣， 最终解释权归蜜丝佛陀所有。</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	/*<![CDATA[*/
+	$(function(){
+		var error = $("#noData"), view = $("#viewData");
+		$.get("/data/getCouponInfo", function(res){
+			if(res.status==200){
+				var product = res.data.recommendProductMap, coupon = res.data.couponMap, topHtml = [], top = $(".tophead");
+
+				if(product.product_type=="N"){ // 非明星产品
+
+					top.css({"background":"url('/static/mf_resource/images/bg.jpg?t=20170306') no-repeat center center;height:4.62222rem", "backgroundSize":"cover"});
+					topHtml.push('<span><table><tr><td style="vertical-align:middle;height:4.62222rem">'+product.product_copywriter+'</td></tr></table></span>');
+					topHtml.push('<img class="rimg" src="'+product.product_image_url+'" />')
+
+				}else{
+					topHtml.push('<img class="img" src="'+product.product_image_url+'" />');
+				}
+				top.html(topHtml.join(''));
+
+				$("#prdName").html('猜你喜欢：'+product.product_name);
+
+
+				// 优惠券
+				var cpname = "", cpinfo="", date = coupon.coupon_dead_time.replace("-","年").replace("-","月")+"日";
+				if(coupon.coupon_name.indexOf("-")>0){ // 满xx减xx
+					var my = coupon.coupon_name.split('-');
+					cpname="满"+my[0]+"减"+my[1];
+
+					cpinfo = '<div class="js">使用说明： <span class="color1">'+date+'前</span>在直营专柜购买任意产品，金额大于'+my[0]+'元，输入优惠码<span class="color1"> '+coupon.coupon_code+' </span>即可享受立减'+my[1]+'元的优惠，赶紧买起来吧！</div>';
+
+					$(".cc1").html(cpname);
+					$(".cc3").html('专柜消费满' +my[0]+ '元使用');
+				}else if(coupon.coupon_name.indexOf("+")>0){ // 满xx赠xx
+
+					var my = coupon.coupon_name.split('+'), is100 = my[0]==my[1] && my[0]==100;
+					cpname = is100 ? "满百赠百" : "满"+my[0]+"赠"+my[1];
+
+					cpinfo = '<div class="js">使用说明： <span class="color1">'+date+'前</span>';
+
+					cpinfo += is100 ? '在直营专柜任意买满一百元产品，即可使用以下卡券，通过输入优惠码<span class="color1"> '+coupon.coupon_code+' </span>兑换价值一百元的专属礼品，礼品详情还请以兑换柜台为准。赶紧买起来吧！' : '在直营专柜购买任意产品，金额大于'+my[0]+'元，输入优惠<span class="color1"> '+coupon.coupon_code+' </span>即可享受立减'+my[1]+'元的优惠，赶紧买起来吧！';
+
+					cpinfo += '</div>';
+
+					$(".cc1").html(is100?'<b style="font-size:0.516667rem;top:1.1rem;">百元回柜礼券</b>':cpname);
+					$(".cc3").html(is100?"专柜消费满100赠送百元好礼":("专柜消费满"+my[0]+"元使用"));
+				}
+
+				$("#buyInfo").html(cpinfo);
+
+				$(".cc7").html(coupon.coupon_code);
+				$(".date").html(date);
+				$("#prdInfo").html(product.page_copywriter+'<h4><span class="color1">'+cpname+'</span>代金券好礼已到！</h4>');
+				error.hide();
+				view.show();
+			}else{
+				error.html(res.errmsg || "服务器正忙，请稍后重试...");
+			}
+		});
+	});
+	/*]]>*/
+</script>
+</body>
+<script type="text/javascript">
+	/*<![CDATA[*/
+	(function(w,d,s,i,p,o){var l = 'dataLayerSt';w[l]=w[l]||[];w[l].push({u:i},{p:p},{c:o});
+		var f=d.getElementsByTagName(s)[0],j=d.createElement(s),o=!o?'':'&o='+o;
+		j.async=true;j.src='http://sdmp.social-touch.com/static/js/stm.php?id='+i+o;f.parentNode.insertBefore(j,f);
+	})(window,document,'script','83_105','2');
+	/*]]>*/
+</script>
+<input type="hidden"  th:value="${session.openid}" id="scdstm" />
+</html>

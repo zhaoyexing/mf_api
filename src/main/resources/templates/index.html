@@ -1,0 +1,35 @@
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+  	 <meta content="text/html;charset=UTF-8"/>
+  	 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+     <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link th:href="@{bootstrap/css/bootstrap.min.css}" rel="stylesheet"/> 
+    <link th:href="@{bootstrap/css/bootstrap-theme.min.css}" rel="stylesheet"/>
+  </head>
+  <body>
+  
+  <div>
+       <label>优惠券信息</label><br/>
+      <label>产品名称：</label><label th:text="${couponMap.recommend_products}"></label><br/>
+      <label>优惠码：</label><label th:text="${couponMap.coupon_code}"></label><br/>
+      <label>到期使劲按：</label><label th:text="${couponMap.coupon_dead_time}"></label><br/>
+      <label>优惠券名称：</label><label th:text="${couponMap.coupon_name}"></label><br/>
+      <label>推荐产品名称：</label><label th:text="${couponMap.recommend_products}"></label><br/>
+  </div>
+
+  <div>
+      <label>推荐产品信息</label><br/>
+      <label>产品id：</label> <label th:text="${recommendProductMap.product_id}"></label><br/>
+      <label>产品名称：</label> <label th:text="${recommendProductMap.product_name}"></label><br/>
+      <label>产品文案：</label><label th:text="${recommendProductMap.product_copywriter}"></label><br/>
+      <label>产品H5文案：</label><label th:text="${recommendProductMap.page_copywriter}"></label><br/>
+      <label>图片名：</label><label th:text="${recommendProductMap.product_image_name}"></label><br/>
+      <label>图片url：</label><label th:text="${recommendProductMap.product_image_url}"></label><br/>
+      <label>产品类型：</label><label th:text="${recommendProductMap.product_type}"></label><br/>
+  </div>
+  
+
+
+  
+  </body>
+ </html>

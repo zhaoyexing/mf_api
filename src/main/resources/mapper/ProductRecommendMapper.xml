@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.st.mapper.ProductRecommendMapper">
+
+
+
+    <select id="getCouponInfoById" parameterType="hashmap" resultType="hashmap">
+
+     SELECT
+        recommend_products,
+        coupon_code,
+        coupon_dead_time,
+        coupon_name
+
+    FROM
+        `mf_pr_co_touch_up`
+    WHERE
+        open_id = #{openid}
+    AND id = #{recordId}
+    AND communite_type = '微信'
+    AND is_use_coupon = 'N'
+    </select>
+
+    <select id="getRecommendProductMapByName" parameterType="string" resultType="hashmap">
+        SELECT
+            product_id,
+            product_name,
+            product_copywriter,
+            page_copywriter,
+            product_image_name,
+            product_image_url,
+            product_type
+        FROM
+            `mf_pr_product_d`
+        WHERE
+            product_name_cn = #{productName}
+
+    </select>
+
+    <select id="getDefaultRecommendProduct" resultType="hashmap">
+
+        SELECT
+            product_id,
+            product_name,
+            product_copywriter,
+            page_copywriter,
+            product_image_name,
+            product_image_url,
+            product_type
+        FROM
+            `mf_pr_product_d`
+         WHERE
+            default_rcmd = 'Y'
+          order by rand() limit 1
+    </select>
+
+
+</mapper>
